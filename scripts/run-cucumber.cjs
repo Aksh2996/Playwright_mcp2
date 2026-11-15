@@ -1,7 +1,9 @@
 const { spawn } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 const reporter = require('cucumber-html-reporter');
+const { chromium } = require('playwright');
 
 const projectRoot = path.resolve(__dirname, '..');
 const reportDirectory = path.join(projectRoot, 'reports');
@@ -57,24 +59,18 @@ cucumber.on('close', (code) => {
     return;
   }
 
-  const openCommand =
-    process.platform === 'win32'
-      ? 'cmd.exe'
-      : process.platform === 'darwin'
-        ? 'open'
-        : 'xdg-open';
-  const openArgs =
-    process.platform === 'win32'
-      ? ['/d', '/s', '/c', `start "" "${htmlReportPath}"`]
-      : [htmlReportPath];
-  const browser = spawn(openCommand, openArgs, {
+  const browser = spawn(chromium.executablePath(), [pathToFileURL(htmlReportPath).href], {
     detached: true,
     stdio: 'ignore',
-    windowsHide: true,
+    windowsHide: false,
   });
 
   browser.on('error', (error) => {
-    console.error(`Failed to open the Cucumber report: ${error.message}`);
+    console.error(`Failed to open the Cucumber report in Chromium: ${error.message}`);
+    process.exitCode = 1;
+  });
+  browser.on('spawn', () => {
+    console.log(`Cucumber report opened in Chromium: ${htmlReportPath}`);
   });
   browser.unref();
   process.exitCode = code ?? 1;
