@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "local_runner": "cucumber-js --tags @login --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\"",
-    "test:bdd": "cucumber-js --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\""
+    "local_runner": "node scripts/run-cucumber.cjs --tags @login --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\"",
+    "test:bdd": "node scripts/run-cucumber.cjs --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,14 @@
     "@cucumber/cucumber": "^13.3.0",
     "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6",
+    "cucumber-html-reporter": "^7.2.0",
     "dotenv": "^16.4.7",
     "tsx": "^4.20.6"
+  },
+  "overrides": {
+    "cucumber-html-reporter": {
+      "@cucumber/cucumber": "$@cucumber/cucumber",
+      "uuid": "^11.1.1"
+    }
   }
 }
