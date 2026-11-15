@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "local_runner": "cucumber-js --tags @test1",
-    "test:bdd": "cucumber-js"
+    "local_runner": "cucumber-js --tags @login --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\"",
+    "test:bdd": "cucumber-js --require-module tsx/cjs --require features/step_definitions/playwright.steps.cjs --require \"features/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,8 @@
   "devDependencies": {
     "@cucumber/cucumber": "^13.3.0",
     "@playwright/test": "^1.65.1",
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.20.6"
   }
 }

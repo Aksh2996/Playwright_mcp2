@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 let browser;
 let page;
 
-Before(async function () {
+Before({ tags: 'not @login' }, async function () {
   browser = await chromium.launch({
     headless: false,
     args: ['--start-maximized'],
@@ -13,7 +13,7 @@ Before(async function () {
   page = await browser.newPage({ viewport: null });
 });
 
-After(async function () {
+After({ tags: 'not @login' }, async function () {
   await browser.close();
 });
 
